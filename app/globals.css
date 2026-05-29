@@ -70,11 +70,6 @@ body {
 ::-webkit-scrollbar-thumb { background: #3A4453; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #7C9CFF; }
 
-/* Custom cursor (desktop only) */
-@media (pointer: fine) {
-  .custom-cursor, .custom-cursor * { cursor: none !important; }
-}
-
 /* Glitch */
 @keyframes glitch-rgb {
   0%, 100% { text-shadow: 0 0 0 transparent; transform: translate(0); }
