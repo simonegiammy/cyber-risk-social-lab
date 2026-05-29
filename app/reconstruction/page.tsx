@@ -6,6 +6,7 @@ import { Quote } from "@/components/primitives/Quote";
 import { EvidenceTag } from "@/components/primitives/EvidenceTag";
 import { Q } from "@/content/dossier";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 import Link from "next/link";
 
 type Node = {
@@ -51,17 +52,18 @@ const colorFor = (h?: string) => {
 export default function Reconstruction() {
   const [open, setOpen] = useState<string | null>(null);
   const node = NODES.find(n => n.id === open);
+  const { t } = useT();
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
-      <SectionBanner mode="reconstruction" no="§01" title="Reconstruction." />
+      <SectionBanner mode="reconstruction" no="§01" title={t("recon.title")} />
 
       {/* Legend */}
       <div className="flex flex-wrap gap-3 mb-10 text-[10px] font-mono uppercase tracking-wider text-fg/60">
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-alarm rounded-full" /> attack vector</span>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-insight rounded-full" /> informal / social</span>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-phos rounded-full" /> detection</span>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-amber rounded-full" /> response</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-alarm rounded-full" /> {t("recon.legend.attack")}</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-insight rounded-full" /> {t("recon.legend.social")}</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-phos rounded-full" /> {t("recon.legend.detection")}</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-amber rounded-full" /> {t("recon.legend.response")}</span>
       </div>
 
       {/* Timeline */}
@@ -104,12 +106,12 @@ export default function Reconstruction() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <div className="font-display text-lg leading-tight">{n.title}</div>
+                      <div className="font-display text-lg leading-tight">{t(`node.${n.id}` as any)}</div>
                       <div className="text-sm text-fg/60 mt-1 line-clamp-1">{q.text.slice(0, 110)}{q.text.length > 110 && "…"}</div>
                     </div>
                     <div className="flex flex-col items-end gap-1 shrink-0">
                       <EvidenceTag type={q.type} source={q.source} />
-                      <span className="font-mono text-[10px] text-fg/30 group-hover:text-phos">expand →</span>
+                      <span className="font-mono text-[10px] text-fg/30 group-hover:text-phos">{t("recon.expand")}</span>
                     </div>
                   </div>
                 </button>
@@ -139,14 +141,14 @@ export default function Reconstruction() {
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <div className="font-mono text-[10px] uppercase tracking-widest text-phos">{node.day} · {node.time}</div>
-                    <h2 className="font-display text-3xl tracking-tightest mt-1">{node.title}</h2>
+                    <h2 className="font-display text-3xl tracking-tightest mt-1">{t(`node.${node.id}` as any)}</h2>
                   </div>
-                  <button onClick={() => setOpen(null)} className="text-fg/60 hover:text-phos font-mono text-xs uppercase">[ ✕ close ]</button>
+                  <button onClick={() => setOpen(null)} className="text-fg/60 hover:text-phos font-mono text-xs uppercase">{t("recon.close")}</button>
                 </div>
                 <Quote q={Q[node.quote]} />
                 {node.mechanismLink && (
                   <Link href={node.mechanismLink} className="mt-6 inline-flex items-center gap-2 px-3 py-2 bordr-phos text-phos font-mono text-xs uppercase tracking-wider hover:bg-phos/10">
-                    → see mechanism in §02
+                    {t("recon.seeMechanism")}
                   </Link>
                 )}
               </div>
@@ -157,8 +159,8 @@ export default function Reconstruction() {
 
       {/* Footer nav */}
       <div className="mt-16 flex justify-between items-center pt-8 border-t border-fg/10">
-        <Link href="/" className="font-mono text-xs uppercase tracking-wider text-fg/60 hover:text-phos">← §00 landing</Link>
-        <Link href="/mechanisms" className="font-mono text-xs uppercase tracking-wider text-insight hover:text-phos">§02 mechanisms unpacked →</Link>
+        <Link href="/" className="font-mono text-xs uppercase tracking-wider text-fg/60 hover:text-phos">{t("recon.navPrev")}</Link>
+        <Link href="/mechanisms" className="font-mono text-xs uppercase tracking-wider text-insight hover:text-phos">{t("recon.navNext")}</Link>
       </div>
     </div>
   );

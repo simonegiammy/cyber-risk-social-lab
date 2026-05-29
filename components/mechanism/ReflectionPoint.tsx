@@ -1,15 +1,17 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useT } from "@/lib/i18n";
 
 export type Option = { text: string; feedback: string };
 
 export function ReflectionPoint({ prompt, options }: { prompt: string; options: Option[] }) {
   const [picked, setPicked] = useState<number | null>(null);
+  const { t } = useT();
 
   return (
     <div className="mt-6 border border-insight/30 bg-insight/[0.04] p-5">
-      <div className="font-mono text-[10px] uppercase tracking-widest text-insight mb-2">REFLECTION POINT — no scoring, every option is partially true</div>
+      <div className="font-mono text-[10px] uppercase tracking-widest text-insight mb-2">{t("reflection.label")}</div>
       <p className="font-display text-xl tracking-tight mb-4">{prompt}</p>
       <ul className="space-y-2">
         {options.map((o, i) => {
@@ -34,7 +36,7 @@ export function ReflectionPoint({ prompt, options }: { prompt: string; options: 
                     className="overflow-hidden"
                   >
                     <div className="px-3 py-2 ml-6 border-l-2 border-phos/40 text-sm text-fg/80 bg-bg-1/40 mt-1">
-                      <span className="font-mono text-[10px] uppercase text-phos mr-2">feedback →</span>
+                      <span className="font-mono text-[10px] uppercase text-phos mr-2">{t("reflection.feedback")}</span>
                       {o.feedback}
                     </div>
                   </motion.div>

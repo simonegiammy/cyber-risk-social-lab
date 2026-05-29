@@ -4,40 +4,63 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useT, useLang } from "@/lib/i18n";
 
-type Role = { href: string; code: string; label: string };
+type Role = { href: string; code: string; labelKey: any };
 
 type Step = {
   no: string;
   href: string;
-  label: string;
+  labelKey: any;
   match: (p: string) => boolean;
   roles?: Role[];
 };
 
 const STEPS: Step[] = [
-  { no: "00", href: "/", label: "Start", match: (p) => p === "/" },
-  { no: "01", href: "/reconstruction", label: "Reconstruction", match: (p) => p === "/reconstruction" },
-  { no: "02", href: "/mechanisms", label: "Mechanisms", match: (p) => p === "/mechanisms" },
+  { no: "00", href: "/", labelKey: "nav.start", match: (p) => p === "/" },
+  { no: "01", href: "/reconstruction", labelKey: "nav.reconstruction", match: (p) => p === "/reconstruction" },
+  { no: "02", href: "/mechanisms", labelKey: "nav.mechanisms", match: (p) => p === "/mechanisms" },
   {
     no: "03",
     href: "/paths/operations",
-    label: "Perspectives",
+    labelKey: "nav.perspectives",
     match: (p) => p.startsWith("/paths"),
     roles: [
-      { href: "/paths/operations", code: "a", label: "Operations" },
-      { href: "/paths/analyst", code: "b", label: "Detection" },
-      { href: "/paths/leadership", code: "c", label: "Governance" },
+      { href: "/paths/operations", code: "a", labelKey: "role.operations" },
+      { href: "/paths/analyst", code: "b", labelKey: "role.detection" },
+      { href: "/paths/leadership", code: "c", labelKey: "role.governance" },
     ],
   },
-  { no: "04", href: "/reframing", label: "Reframing", match: (p) => p === "/reframing" },
+  { no: "04", href: "/reframing", labelKey: "nav.reframing", match: (p) => p === "/reframing" },
 ];
+
+function LangToggle() {
+  const { lang, setLang } = useLang();
+  return (
+    <div className="flex items-center border border-fg/20 rounded-sm overflow-hidden font-mono text-[10px] uppercase tracking-wider">
+      {(["en", "it"] as const).map((l) => (
+        <button
+          key={l}
+          onClick={() => setLang(l)}
+          aria-pressed={lang === l}
+          className={cn(
+            "px-2 py-1 transition-colors",
+            lang === l ? "bg-phos/15 text-phos" : "text-fg/45 hover:text-insight"
+          )}
+        >
+          {l}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 // Flat order used for prev / next
 const FLOW = ["/", "/reconstruction", "/mechanisms", "/paths/operations", "/paths/analyst", "/paths/leadership", "/reframing"];
 
 export function TopNav() {
   const pathname = usePathname();
+  const { t } = useT();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const { scrollYProgress } = useScroll();
@@ -86,7 +109,7 @@ export function TopNav() {
                     )}>
                       {s.no}
                     </span>
-                    <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap">{s.label}</span>
+                    <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap">{t(s.labelKey)}</span>
                     {s.roles && <span className="text-[9px] opacity-50">▾</span>}
                   </Link>
 
@@ -108,7 +131,7 @@ export function TopNav() {
                               pathname === r.href ? "text-phos bg-phos/5" : "text-fg/60 hover:text-insight hover:bg-fg/5"
                             )}
                           >
-                            <span className="opacity-50">03{r.code}</span> {r.label}
+                            <span className="opacity-50">03{r.code}</span> {t(r.labelKey)}
                           </Link>
                         ))}
                       </div>
@@ -119,20 +142,21 @@ export function TopNav() {
             })}
           </nav>
 
-          {/* next affordance (desktop) + hamburger (mobile) */}
+          {/* lang toggle + next affordance (desktop) + hamburger (mobile) */}
           <div className="flex items-center gap-3 shrink-0">
+            <LangToggle />
             {next && (
               <Link
                 href={next}
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bordr-phos text-phos font-mono text-[11px] uppercase tracking-wider hover:bg-phos/10 transition-colors"
               >
-                Next <span aria-hidden>→</span>
+                {t("nav.next")} <span aria-hidden>→</span>
               </Link>
             )}
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className="lg:hidden grid place-items-center w-9 h-9 bordr text-fg/70 hover:text-phos"
-              aria-label="Toggle menu"
+              aria-label={t("nav.menu")}
             >
               <span className="font-mono text-xs">{menuOpen ? "✕" : "☰"}</span>
             </button>
@@ -157,7 +181,7 @@ export function TopNav() {
                     i === activeIdx ? "text-phos" : "text-fg/60"
                   )}
                 >
-                  <span className="w-6 text-[11px] opacity-60">{s.no}</span> {s.label}
+                  <span className="w-6 text-[11px] opacity-60">{s.no}</span> {t(s.labelKey)}
                 </Link>
                 {s.roles && (
                   <div className="pl-11 flex flex-col">
@@ -170,7 +194,7 @@ export function TopNav() {
                           pathname === r.href ? "text-phos" : "text-fg/50"
                         )}
                       >
-                        03{r.code} · {r.label}
+                        03{r.code} · {t(r.labelKey)}
                       </Link>
                     ))}
                   </div>

@@ -6,17 +6,19 @@ import { RoleSwitcher } from "@/components/shell/RoleSwitcher";
 import { PathFrame, ThreeColumns } from "@/components/paths/PathFrame";
 import { Quote } from "@/components/primitives/Quote";
 import { Q } from "@/content/dossier";
+import { useT } from "@/lib/i18n";
 
 export default function LeadershipPath() {
   const [view, setView] = useState<"before" | "after">("before");
+  const { t } = useT();
   return (
     <>
       <RoleSwitcher />
       <PathFrame
         no="§03c"
-        role="GOVERNANCE — MANAGING BOARD"
-        layer="ORGANISATIONAL VULNERABILITY"
-        title='Did the system function? Or did the system absorb its own failure?'
+        role={t("roleTitle.governance")}
+        layer={t("layer.organisational")}
+        title={t("ld.title")}
       >
         <ThreeColumns
           happened={<>
@@ -38,23 +40,23 @@ export default function LeadershipPath() {
 
         {/* Town-hall transcript */}
         <section className="mt-20">
-          <div className="font-mono text-[10px] uppercase tracking-widest text-amber mb-2">BOARDROOM TRANSCRIPT · the difficult node</div>
-          <h2 className="font-display text-4xl tracking-tightest mb-6">"Functioned as designed" — interrogated.</h2>
+          <div className="font-mono text-[10px] uppercase tracking-widest text-amber mb-2">{t("ld.transcriptLabel")}</div>
+          <h2 className="font-display text-4xl tracking-tightest mb-6">{t("ld.transcriptTitle")}</h2>
 
           <div className="bordr bg-bg-1/40 p-6 max-w-3xl space-y-4 font-mono text-sm">
             <div>
-              <div className="text-fg/40 text-xs uppercase tracking-widest mb-1">▸ retrospective conclusion (as filed)</div>
-              <p className="text-fg/80 italic">"The system functioned as designed."</p>
+              <div className="text-fg/40 text-xs uppercase tracking-widest mb-1">{t("ld.tr.concLabel")}</div>
+              <p className="text-fg/80 italic">{t("ld.tr.conc")}</p>
             </div>
             <div>
-              <div className="text-insight text-xs uppercase tracking-widest mb-1">▸ counter-claim (dossier, p.4)</div>
+              <div className="text-insight text-xs uppercase tracking-widest mb-1">{t("ld.tr.counterLabel")}</div>
               <p className="text-fg/85">
                 <span className="text-insight">«</span> declaring the system "functioned as designed" ignores critical gaps in detection speed,
                 in employee preparedness, and in credential renewal architecture <span className="text-insight">»</span>
               </p>
             </div>
             <div>
-              <div className="text-phos text-xs uppercase tracking-widest mb-1">▸ corrective principle</div>
+              <div className="text-phos text-xs uppercase tracking-widest mb-1">{t("ld.tr.principleLabel")}</div>
               <p className="text-fg/85">
                 <span className="text-phos">«</span> A true learning orientation must name these failures, rather than absorbing them into a narrative of institutional resilience. <span className="text-phos">»</span>
               </p>
@@ -64,14 +66,14 @@ export default function LeadershipPath() {
 
         {/* Cost breakdown */}
         <section className="mt-16">
-          <div className="font-mono text-[10px] uppercase tracking-widest text-amber mb-2">INTERVENTION · cost / friction trade-off</div>
+          <div className="font-mono text-[10px] uppercase tracking-widest text-amber mb-2">{t("ld.interventionLabel")}</div>
 
           <div className="flex gap-2 mb-4">
             {(["before", "after"] as const).map((v) => (
               <button key={v} onClick={() => setView(v)} className={`px-3 py-1.5 border font-mono text-[11px] uppercase tracking-wider ${
                 view === v ? "border-phos text-phos bg-phos/10" : "border-fg/20 text-fg/60 hover:border-insight"
               }`}>
-                {v === "before" ? "before · email-initiated" : "after · intranet + mobile authenticator"}
+                {v === "before" ? t("ld.toggle.before") : t("ld.toggle.after")}
               </button>
             ))}
           </div>
@@ -79,15 +81,15 @@ export default function LeadershipPath() {
           <motion.div key={view} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid md:grid-cols-3 gap-4">
             {view === "before" ? (
               <>
-                <Stat label="Compromised accounts" value="40" tone="alarm" />
-                <Stat label="Detection lag" value="3 days" tone="alarm" />
-                <Stat label="OOB verification" value="none" tone="alarm" />
+                <Stat label={t("ld.stat.compromised")} value="40" tone="alarm" />
+                <Stat label={t("ld.stat.lag")} value={t("ld.stat.lag.val")} tone="alarm" />
+                <Stat label={t("ld.stat.oob")} value={t("ld.stat.oob.none")} tone="alarm" />
               </>
             ) : (
               <>
-                <Stat label="Integration cost" value="€45,000" tone="phos" />
-                <Stat label="Friction / employee / cycle" value="10–15 min" tone="amber" />
-                <Stat label="OOB verification" value="mobile authenticator" tone="phos" />
+                <Stat label={t("ld.stat.cost")} value="€45,000" tone="phos" />
+                <Stat label={t("ld.stat.friction")} value={t("ld.stat.friction.val")} tone="amber" />
+                <Stat label={t("ld.stat.oob")} value={t("ld.stat.oob.auth")} tone="phos" />
               </>
             )}
           </motion.div>
@@ -98,8 +100,8 @@ export default function LeadershipPath() {
         </section>
 
         <div className="mt-16 flex justify-between items-center pt-8 border-t border-fg/10">
-          <Link href="/paths/analyst" className="font-mono text-xs uppercase tracking-wider text-fg/60 hover:text-phos">← §03b detection</Link>
-          <Link href="/reframing" className="font-mono text-xs uppercase tracking-wider text-insight hover:text-phos">§04 reframing →</Link>
+          <Link href="/paths/analyst" className="font-mono text-xs uppercase tracking-wider text-fg/60 hover:text-phos">{t("ld.navPrev")}</Link>
+          <Link href="/reframing" className="font-mono text-xs uppercase tracking-wider text-insight hover:text-phos">{t("ld.navNext")}</Link>
         </div>
       </PathFrame>
     </>
