@@ -4,16 +4,15 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { RoleSwitcher } from "@/components/shell/RoleSwitcher";
 import { PathFrame, ThreeColumns } from "@/components/paths/PathFrame";
-import { Quote } from "@/components/primitives/Quote";
-import { Q } from "@/content/dossier";
+import { Bullets } from "@/components/paths/Bullets";
 import { useT } from "@/lib/i18n";
 
 type Branch = "click" | "defer" | "verify" | null;
 
-const BRANCHES: Record<Exclude<Branch, null>, { quote: keyof typeof Q; link: string }> = {
-  click: { quote: "temporalAlignment", link: "/mechanisms#routine" },
-  defer: { quote: "coffeeBreak", link: "/mechanisms#social-proof" },
-  verify: { quote: "technicalMitigation", link: "/mechanisms#paradox" },
+const BRANCHES: Record<Exclude<Branch, null>, { link: string }> = {
+  click: { link: "/mechanisms" },
+  defer: { link: "/mechanisms" },
+  verify: { link: "/mechanisms" },
 };
 
 export default function OperationsPath() {
@@ -30,27 +29,16 @@ export default function OperationsPath() {
         title={t("ops.title")}
       >
         <ThreeColumns
-          happened={<>
-            <Quote q={Q.monPhishing} inline />
-            <Quote q={Q.wedSeventy} inline />
-            <Quote q={Q.coffeeBreak} inline />
-            <Quote q={Q.thuForty} inline />
-          </>}
-          reveals={<>
-            <Quote q={Q.standardisationParadox} inline />
-            <Quote q={Q.measuredTone} inline />
-          </>}
-          changes={<>
-            <Quote q={Q.technicalMitigation} inline />
-            <Quote q={Q.methodIntervention} inline />
-            <Quote q={Q.socialMitigation} inline />
-          </>}
+          happened={<Bullets items={[t("ops.happened1"), t("ops.happened2"), t("ops.happened3")]} />}
+          reveals={<Bullets items={[t("ops.reveals1"), t("ops.reveals2"), t("ops.reveals3")]} tone="insight" />}
+          changes={<Bullets items={[t("ops.changes1"), t("ops.changes2"), t("ops.changes3")]} tone="phos" />}
         />
 
-        {/* Branching scenario */}
+        {/* Interactive scenario */}
         <section className="mt-20">
           <div className="font-mono text-[10px] uppercase tracking-widest text-amber mb-2">{t("ops.scenarioLabel")}</div>
-          <h2 className="font-display text-4xl tracking-tightest mb-6">{t("ops.scenarioTitle")}</h2>
+          <h2 className="font-display text-4xl tracking-tightest mb-2">{t("ops.scenarioTitle")}</h2>
+          <p className="text-sm text-fg/55 mb-6">{t("ops.scenarioHint")}</p>
 
           {/* Email mock */}
           <div className="bordr bg-bg-1 p-6 max-w-2xl font-mono text-sm">
@@ -63,17 +51,20 @@ export default function OperationsPath() {
             <p className="text-fg/80 mb-2">
               {t("ops.mail.bodyA")} <span className="text-insight">70%</span> {t("ops.mail.bodyB")}
             </p>
-            <p className="text-insight underline cursor-pointer">{t("ops.mail.link")}</p>
+            <p className="text-insight underline cursor-pointer">→ {t("ops.mail.link")}</p>
             <p className="text-fg/60 mt-3 text-xs">{t("ops.mail.signoff")}</p>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-phos animate-pulse">↓ {t("ops.scenarioHint")}</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-3">
             {(["click", "defer", "verify"] as const).map((b) => (
               <button
                 key={b}
                 onClick={() => setBranch(b)}
                 className={`px-4 py-3 border font-mono text-xs uppercase tracking-wider transition-all ${
-                  branch === b ? "border-phos text-phos bg-phos/10" : "border-fg/20 text-fg/70 hover:border-insight hover:text-insight"
+                  branch === b ? "border-phos text-phos bg-phos/10" : "border-fg/30 text-fg/80 hover:border-insight hover:text-insight hover:bg-insight/5"
                 }`}
               >
                 {b === "click" && t("ops.btn.click")}
@@ -94,9 +85,8 @@ export default function OperationsPath() {
               >
                 <h3 className="font-display text-2xl tracking-tightest mb-3">{t(`ops.br.${branch}.title` as any)}</h3>
                 <p className="text-fg/80 text-sm leading-relaxed mb-4">{t(`ops.br.${branch}.body` as any)}</p>
-                <Quote q={Q[BRANCHES[branch].quote]} />
-                <Link href={BRANCHES[branch].link} className="mt-4 inline-block font-mono text-xs uppercase tracking-wider text-phos hover:underline">
-                  {t("ops.seeMechanism")}
+                <Link href={BRANCHES[branch].link} className="inline-block font-mono text-xs uppercase tracking-wider text-phos hover:underline">
+                  → {t("ops.seeMechanism")}
                 </Link>
               </motion.div>
             )}
@@ -104,8 +94,8 @@ export default function OperationsPath() {
         </section>
 
         <div className="mt-16 flex justify-between items-center pt-8 border-t border-fg/10">
-          <Link href="/mechanisms" className="font-mono text-xs uppercase tracking-wider text-fg/60 hover:text-phos">{t("ops.navPrev")}</Link>
-          <Link href="/paths/analyst" className="font-mono text-xs uppercase tracking-wider text-insight hover:text-phos">{t("ops.navNext")}</Link>
+          <Link href="/mechanisms" className="font-mono text-xs uppercase tracking-wider text-fg/60 hover:text-phos">← {t("ops.navPrev")}</Link>
+          <Link href="/paths/analyst" className="font-mono text-xs uppercase tracking-wider text-insight hover:text-phos">{t("ops.navNext")} →</Link>
         </div>
       </PathFrame>
     </>

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { NetworkBackground } from "@/components/three/NetworkBackground";
 import { GlitchText } from "@/components/primitives/GlitchText";
-import { Q } from "@/content/dossier";
 import { useT } from "@/lib/i18n";
 
 const ROLES = [
@@ -16,7 +15,6 @@ const ITINERARY = [
   { no: "01", href: "/reconstruction", labelKey: "it01.label", descKey: "it01.desc" },
   { no: "02", href: "/mechanisms", labelKey: "it02.label", descKey: "it02.desc" },
   { no: "03", href: "/paths/operations", labelKey: "it03.label", descKey: "it03.desc" },
-  { no: "04", href: "/reframing", labelKey: "it04.label", descKey: "it04.desc" },
 ] as const;
 
 const ease = [0.2, 0.8, 0.2, 1] as const;
@@ -45,8 +43,7 @@ export default function Landing() {
           <div className="mt-8 max-w-2xl border-l-2 border-phos/60 pl-4 py-3 bg-phos/[0.04]">
             <span className="font-mono text-[11px] text-phos uppercase tracking-wider block mb-1">{t("landing.principleLabel")}</span>
             <p className="text-sm text-fg/80 leading-relaxed">
-              {t("landing.principleA")} <strong className="text-fg">{t("landing.principleNot")}</strong> {t("landing.principleB")}{" "}
-              <span className="text-insight">«&nbsp;{Q.staffNotCareless.text}&nbsp;»</span>
+              {t("landing.principleA")} <strong className="text-fg">{t("landing.principleNot")}</strong> {t("landing.principleB")}
             </p>
           </div>
 
@@ -65,7 +62,7 @@ export default function Landing() {
       {/* ITINERARY — makes the linear flow explicit */}
       <section className="relative max-w-5xl mx-auto px-6 pb-16">
         <div className="font-mono text-[11px] uppercase tracking-widest text-fg/40 mb-4">{t("landing.walkLabel")}</div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {ITINERARY.map((s, i) => (
             <motion.div key={s.no} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.07 }}>
               <Link href={s.href} className="group block h-full bordr bg-bg-1/40 backdrop-blur-sm p-4 hover:border-phos/50 hover:bg-bg-1/70 transition-all">
@@ -75,6 +72,9 @@ export default function Landing() {
                 </div>
                 <div className="font-display text-xl tracking-tightest group-hover:text-phos transition-colors">{t(s.labelKey)}</div>
                 <p className="mt-1.5 text-[13px] text-fg/55 leading-snug">{t(s.descKey)}</p>
+                <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-fg/35 group-hover:text-phos transition-colors">
+                  <span className="grid place-items-center w-4 h-4 rounded-full border border-current">›</span> {t("landing.clickHint")}
+                </div>
               </Link>
             </motion.div>
           ))}

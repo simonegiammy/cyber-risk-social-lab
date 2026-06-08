@@ -5,8 +5,8 @@ import { TopNav } from "@/components/shell/TopNav";
 import { SiteFooter } from "@/components/shell/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Functioning as Designed? — Group 5 Forensic Learning",
-  description: "An organisational learning microsite. Group 5 incident, annual compliance cycle.",
+  title: "Functioning as Designed? A worked example for organizational learning",
+  description: "A reusable organizational-learning example, illustrated with one anonymized phishing incident on an annual compliance routine.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

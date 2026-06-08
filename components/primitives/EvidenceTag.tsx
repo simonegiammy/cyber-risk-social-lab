@@ -11,7 +11,7 @@ export function EvidenceTag({ type, source }: { type: "E" | "I" | "S"; source?: 
   const s = styles[type];
   return (
     <span
-      title={source ? `${s.label} — ${source}` : s.label}
+      title={source ? `${s.label}, ${source}` : s.label}
       className={cn(
         "inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-wider border rounded-sm",
         s.cls

@@ -18,8 +18,8 @@ type Step = {
 
 const STEPS: Step[] = [
   { no: "00", href: "/", labelKey: "nav.start", match: (p) => p === "/" },
-  { no: "01", href: "/reconstruction", labelKey: "nav.reconstruction", match: (p) => p === "/reconstruction" },
-  { no: "02", href: "/mechanisms", labelKey: "nav.mechanisms", match: (p) => p === "/mechanisms" },
+  { no: "01", href: "/reconstruction", labelKey: "nav.anatomy", match: (p) => p === "/reconstruction" },
+  { no: "02", href: "/mechanisms", labelKey: "nav.rules", match: (p) => p === "/mechanisms" },
   {
     no: "03",
     href: "/paths/operations",
@@ -31,7 +31,6 @@ const STEPS: Step[] = [
       { href: "/paths/leadership", code: "c", labelKey: "role.governance" },
     ],
   },
-  { no: "04", href: "/reframing", labelKey: "nav.reframing", match: (p) => p === "/reframing" },
 ];
 
 function LangToggle() {
@@ -56,7 +55,7 @@ function LangToggle() {
 }
 
 // Flat order used for prev / next
-const FLOW = ["/", "/reconstruction", "/mechanisms", "/paths/operations", "/paths/analyst", "/paths/leadership", "/reframing"];
+const FLOW = ["/", "/reconstruction", "/mechanisms", "/paths/operations", "/paths/analyst", "/paths/leadership"];
 
 export function TopNav() {
   const pathname = usePathname();
